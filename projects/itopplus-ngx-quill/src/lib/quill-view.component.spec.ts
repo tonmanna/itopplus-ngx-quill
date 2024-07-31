@@ -6,8 +6,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { QuillViewComponent } from './quill-view.component'
 
 import { QuillModule } from './quill.module'
-import Quill from 'quill'
-
+import Quill from 'itopplus-quill'
 
 class CustomModule {
   quill: Quill
@@ -26,17 +25,21 @@ describe('Basic QuillViewComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         QuillModule.forRoot({
-          customModules: [{
-            path: 'modules/custom',
-            implementation: CustomModule
-          }],
-          customOptions: [{
-            import: 'attributors/style/size',
-            whitelist: ['14']
-          }],
-        })
+          customModules: [
+            {
+              path: 'modules/custom',
+              implementation: CustomModule,
+            },
+          ],
+          customOptions: [
+            {
+              import: 'attributors/style/size',
+              whitelist: ['14'],
+            },
+          ],
+        }),
       ],
-      providers: QuillModule.forRoot().providers
+      providers: QuillModule.forRoot().providers,
     })
 
     fixture = TestBed.createComponent(QuillViewComponent)
@@ -51,7 +54,9 @@ describe('Basic QuillViewComponent', () => {
 
     expect(element.querySelectorAll('.ql-editor').length).toBe(1)
     expect(fixture.componentInstance.quillEditor).toBeDefined()
-    const viewElement = element.querySelector('.ql-container.ql-snow.ngx-quill-view > .ql-editor')
+    const viewElement = element.querySelector(
+      '.ql-container.ql-snow.ngx-quill-view > .ql-editor'
+    )
     expect(viewElement).toBeDefined()
   })
 })
@@ -60,16 +65,23 @@ describe('Formats', () => {
   describe('object', () => {
     @Component({
       template: `
-    <quill-view [content]="content" [customModules]="[{path: 'modules/test', implementation: impl}]" format="object"></quill-view>
-    `
+        <quill-view
+          [content]="content"
+          [customModules]="[{ path: 'modules/test', implementation: impl }]"
+          format="object"
+        ></quill-view>
+      `,
     })
     class ObjectComponent {
       @ViewChild(QuillViewComponent, {
-        static: true
-      }) view: QuillViewComponent | undefined
-      content = [{
-        insert: 'Hello'
-      }]
+        static: true,
+      })
+      view: QuillViewComponent | undefined
+      content = [
+        {
+          insert: 'Hello',
+        },
+      ]
 
       impl = CustomModule
     }
@@ -80,10 +92,12 @@ describe('Formats', () => {
       TestBed.configureTestingModule({
         declarations: [ObjectComponent],
         imports: [QuillModule],
-        providers: QuillModule.forRoot().providers
+        providers: QuillModule.forRoot().providers,
       })
 
-      fixture = TestBed.createComponent(ObjectComponent) as ComponentFixture<ObjectComponent>
+      fixture = TestBed.createComponent(
+        ObjectComponent
+      ) as ComponentFixture<ObjectComponent>
       fixture.detectChanges()
     })
 
@@ -91,7 +105,9 @@ describe('Formats', () => {
       const component = fixture.componentInstance
 
       await fixture.whenStable()
-      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(JSON.stringify({ops: [{insert: 'Hello\n'}]}))
+      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(
+        JSON.stringify({ ops: [{ insert: 'Hello\n' }] })
+      )
     })
 
     it('should update object content', async () => {
@@ -101,20 +117,21 @@ describe('Formats', () => {
       fixture.detectChanges()
 
       await fixture.whenStable()
-      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(JSON.stringify({ops: [{insert: '1234\n'}]}))
+      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(
+        JSON.stringify({ ops: [{ insert: '1234\n' }] })
+      )
     })
   })
 
   describe('html', () => {
     @Component({
-      template: `
-    <quill-view [content]="content" format="html"></quill-view>
-    `
+      template: ` <quill-view [content]="content" format="html"></quill-view> `,
     })
     class HTMLComponent {
       @ViewChild(QuillViewComponent, {
-        static: true
-      }) view: QuillViewComponent | undefined
+        static: true,
+      })
+      view: QuillViewComponent | undefined
       content = '<p>Hallo</p>'
     }
 
@@ -124,10 +141,12 @@ describe('Formats', () => {
       TestBed.configureTestingModule({
         declarations: [HTMLComponent],
         imports: [QuillModule],
-        providers: QuillModule.forRoot().providers
+        providers: QuillModule.forRoot().providers,
       })
 
-      fixture = TestBed.createComponent(HTMLComponent) as ComponentFixture<HTMLComponent>
+      fixture = TestBed.createComponent(
+        HTMLComponent
+      ) as ComponentFixture<HTMLComponent>
       fixture.detectChanges()
     })
     it('should be set html', async () => {
@@ -150,14 +169,13 @@ describe('Formats', () => {
 
   describe('text', () => {
     @Component({
-      template: `
-    <quill-view [content]="content" format="text"></quill-view>
-    `
+      template: ` <quill-view [content]="content" format="text"></quill-view> `,
     })
     class TextComponent {
       @ViewChild(QuillViewComponent, {
-        static: true
-      }) view: QuillViewComponent | undefined
+        static: true,
+      })
+      view: QuillViewComponent | undefined
       content = 'Hallo'
     }
 
@@ -167,10 +185,12 @@ describe('Formats', () => {
       TestBed.configureTestingModule({
         declarations: [TextComponent],
         imports: [QuillModule],
-        providers: QuillModule.forRoot().providers
+        providers: QuillModule.forRoot().providers,
       })
 
-      fixture = TestBed.createComponent(TextComponent) as ComponentFixture<TextComponent>
+      fixture = TestBed.createComponent(
+        TextComponent
+      ) as ComponentFixture<TextComponent>
       fixture.detectChanges()
     })
     it('should be set text', async () => {
@@ -192,17 +212,18 @@ describe('Formats', () => {
 
   describe('json', () => {
     @Component({
-      template: `
-    <quill-view [content]="content" format="json"></quill-view>
-    `
+      template: ` <quill-view [content]="content" format="json"></quill-view> `,
     })
     class JSONComponent {
       @ViewChild(QuillViewComponent, {
-        static: true
-      }) view: QuillViewComponent | undefined
-      content = JSON.stringify([{
-        insert: 'Hallo'
-      }])
+        static: true,
+      })
+      view: QuillViewComponent | undefined
+      content = JSON.stringify([
+        {
+          insert: 'Hallo',
+        },
+      ])
     }
 
     let fixture: ComponentFixture<JSONComponent>
@@ -211,10 +232,12 @@ describe('Formats', () => {
       TestBed.configureTestingModule({
         declarations: [JSONComponent],
         imports: [QuillModule],
-        providers: QuillModule.forRoot().providers
+        providers: QuillModule.forRoot().providers,
       })
 
-      fixture = TestBed.createComponent(JSONComponent) as ComponentFixture<JSONComponent>
+      fixture = TestBed.createComponent(
+        JSONComponent
+      ) as ComponentFixture<JSONComponent>
       fixture.detectChanges()
     })
 
@@ -223,33 +246,44 @@ describe('Formats', () => {
       await fixture.whenStable()
       await fixture.whenStable()
 
-      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(JSON.stringify({ops: [{insert: 'Hallo\n'}]}))
+      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(
+        JSON.stringify({ ops: [{ insert: 'Hallo\n' }] })
+      )
     })
 
     it('should update json string', async () => {
       const component = fixture.componentInstance
       await fixture.whenStable()
 
-      component.content = JSON.stringify([{
-        insert: 'Hallo 123'
-      }])
+      component.content = JSON.stringify([
+        {
+          insert: 'Hallo 123',
+        },
+      ])
       fixture.detectChanges()
       await fixture.whenStable()
 
-      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(JSON.stringify({ops: [{insert: 'Hallo 123\n'}]}))
+      expect(JSON.stringify(component.view!.quillEditor.getContents())).toEqual(
+        JSON.stringify({ ops: [{ insert: 'Hallo 123\n' }] })
+      )
     })
   })
 })
 
 describe('Advanced QuillViewComponent', () => {
-
   @Component({
     template: `
-  <quill-view [content]="content" format="html" (onEditorCreated)="handleEditorCreated($event)"></quill-view>
-  `
+      <quill-view
+        [content]="content"
+        format="html"
+        (onEditorCreated)="handleEditorCreated($event)"
+      ></quill-view>
+    `,
   })
   class AdvancedComponent {
-    @ViewChild(QuillViewComponent, {static: true}) view: QuillViewComponent | undefined
+    @ViewChild(QuillViewComponent, { static: true }) view:
+      | QuillViewComponent
+      | undefined
     content = '<p>Hallo</p>'
     quillEditor: any
 
@@ -261,24 +295,26 @@ describe('Advanced QuillViewComponent', () => {
   let fixture: ComponentFixture<AdvancedComponent>
 
   beforeEach(async () => {
-
     TestBed.configureTestingModule({
       declarations: [AdvancedComponent],
       imports: [QuillModule],
-      providers: QuillModule.forRoot().providers
+      providers: QuillModule.forRoot().providers,
     }).compileComponents()
 
-    fixture = TestBed.createComponent(AdvancedComponent) as ComponentFixture<AdvancedComponent>
+    fixture = TestBed.createComponent(
+      AdvancedComponent
+    ) as ComponentFixture<AdvancedComponent>
   })
 
-  it('should emit onEditorCreated with editor instance',  async () => {
-
+  it('should emit onEditorCreated with editor instance', async () => {
     spyOn(fixture.componentInstance, 'handleEditorCreated')
     fixture.detectChanges()
 
     await fixture.whenStable()
 
     const viewComponent = fixture.debugElement.children[0].componentInstance
-    expect(fixture.componentInstance.handleEditorCreated).toHaveBeenCalledWith(viewComponent.quillEditor)
+    expect(fixture.componentInstance.handleEditorCreated).toHaveBeenCalledWith(
+      viewComponent.quillEditor
+    )
   })
 })

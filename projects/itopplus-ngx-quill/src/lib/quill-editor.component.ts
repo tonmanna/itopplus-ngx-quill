@@ -2,7 +2,7 @@
 import { DOCUMENT, isPlatformServer, CommonModule } from '@angular/common'
 import { DomSanitizer } from '@angular/platform-browser'
 
-import QuillType, { Delta } from 'quill'
+import QuillType, { Delta } from 'itopplus-quill'
 
 import {
   AfterViewInit,

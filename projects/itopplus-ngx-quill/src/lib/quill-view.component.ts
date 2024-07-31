@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule, isPlatformServer } from '@angular/common'
-import QuillType from 'quill'
+import QuillType from 'itopplus-quill'
 
 import {
   AfterViewInit,
